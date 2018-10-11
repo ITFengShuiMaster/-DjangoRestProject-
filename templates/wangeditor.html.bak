@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>wangEditor demo</title>
+    <script type="text/javascript" src="./wangEditor.min.js"></script>
+    <script type="text/javascript" src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div id="editorDiv">
+    </div>
+    <button onclick='send()'>确定</button>
+   
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editorDiv')
+        editor.create()
+        var content = editor.txt.html();
+        console.log(content)
+        function send(){
+        	  var content = editor.txt.html();
+        	  $.ajax({
+				cache: false,
+				type: "POST",
+				url:" http://127.0.0.1:8000/upload_video/",
+				data:{"content":content},
+				async: true,
+				beforeSend:function(xhr, settings){
+					xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+				},
+				success: function(data) {
+					alert("OK");
+        },
+    });
+        	   
+ }
+	
+    </script>
+</body>
+</html>
